@@ -241,7 +241,7 @@ function deleteRow(route) {
                 $this.closest( 'tr' ).fadeOut( 'slow' );
                 closeModal('#delete-confirm-modal');
             }else {
-                $('.modal-body').prepend('<p class="alert alert-danger">Unable to delete.</p>');
+                $('.modal-body').html('<p class="alert alert-danger">Unable to delete.</p>');
             }
         } );
 

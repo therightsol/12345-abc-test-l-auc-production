@@ -36,6 +36,8 @@
                         <li><a class="{{ Helper::isActiveResource('admin.carModel') }}" href="{{ route('admin.carModel.index') }}"><span class="title">Manage Car Modal</span></a></li>
                         <li><a class="{{ Helper::isActiveResource('admin.engineTypes') }}" href="{{ route('admin.engineTypes.index') }}"><span class="title">Manage Engine Types</span></a></li>
                         <li><a class="{{ Helper::isActiveResource('admin.features') }}" href="{{ route('admin.features.index') }}"><span class="title">Manage Car Features</span></a></li>
+                        <li><a class="{{ Helper::isActiveResource('admin.category') }}" href="{{ route('admin.category.index') }}"><span class="title">Manage Category</span></a></li>
+
                     </ul><!--end /submenu -->
 
                 </li>

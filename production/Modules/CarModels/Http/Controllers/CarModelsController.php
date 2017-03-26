@@ -11,6 +11,7 @@ use Illuminate\Routing\Controller;
 use Modules\CarCompanies\Entities\CarCompany;
 use Modules\CarModels\Http\Filters\CarModelsFilter;
 use Modules\CarModels\Entities\CarModel;
+use Modules\CommonBackend\Http\Filters;
 
 class CarModelsController extends Controller
 {
@@ -20,8 +21,10 @@ class CarModelsController extends Controller
      * Display a listing of the resource.
      * @return Response
      */
-    public function index(CarModelsFilter $filter, Request $request)
+    public function index(Filters $filter, Request $request)
     {
+        $filter->column = ['id','model_name'];
+        $filter->belongsTo = [CarCompany::class => ['company_name']];
         $carModels = CarModel::filter($filter)
             ->paginate(\Helper::limit($request));
         return view('carmodels::index', compact('carModels'));

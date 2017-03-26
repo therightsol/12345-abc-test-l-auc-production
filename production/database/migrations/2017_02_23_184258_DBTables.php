@@ -219,8 +219,8 @@ class DBTables extends Migration
 
             $table->foreign('feature_id')
                 ->references('id')->on('features')
-                ->onDelete('no action')
-                ->onUpdate('no action');
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
             $table->foreign('car_id')
                 ->references('id')->on('cars')
@@ -277,8 +277,8 @@ class DBTables extends Migration
 
             $table->foreign('category_id')
                 ->references('id')->on('categories')
-                ->onDelete('no action')
-                ->onUpdate('no action');
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
         });
         echo "car_categories table created \n";
@@ -298,8 +298,8 @@ class DBTables extends Migration
 
             $table->foreign('car_company_id')
                 ->references('id')->on('car_companies')
-                ->onDelete('no action')
-                ->onUpdate('no action');
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
         });
         echo "car_models table created \n";
@@ -339,18 +339,18 @@ class DBTables extends Migration
 
             $table->foreign('engine_type_id')
                 ->references('id')->on('engine_types')
-                ->onDelete('no action')
-                ->onUpdate('no action');
+                ->onDelete('set null')
+                ->onUpdate('set null');
 
             $table->foreign('car_model_id')
                 ->references('id')->on('car_models')
-                ->onDelete('no action')
-                ->onUpdate('no action');
+                ->onDelete('set null')
+                ->onUpdate('set null');
 
             $table->foreign('user_id')
                 ->references('id')->on('users')
-                ->onDelete('no action')
-                ->onUpdate('no action');
+                ->onDelete('set null')
+                ->onUpdate('set null');
 
 
         });

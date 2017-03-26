@@ -4,8 +4,8 @@
     <table class="table table-striped table-hover dataTable">
         <thead>
         <tr>
-            <th class="sorting" data-table="EngineTypeModel.id">Id</th>
-            <th class="sorting" data-table="EngineTypeModel.title">Name</th>
+            <th class="sorting" data-table="EngineType.id">Id</th>
+            <th class="sorting" data-table="EngineType.title">Name</th>
             <th>Action</th>
 
         </tr>

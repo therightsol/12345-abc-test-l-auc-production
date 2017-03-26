@@ -4,9 +4,9 @@
     <table class="table table-striped table-hover dataTable">
         <thead>
         <tr>
-            <th class="sorting" data-table="CarModelsModel.id">Id</th>
-            <th class="sorting" data-table="CarModelsModel.company_name">Model Name</th>
-            <th class="sorting" data-table="CarCompaniesModel.company_name">Company Name</th>
+            <th class="sorting" data-table="CarModel.id">Id</th>
+            <th class="sorting" data-table="CarModel.company_name">Model Name</th>
+            <th class="sorting" data-table="CarCompany.company_name">Company Name</th>
             <th>Action</th>
 
         </tr>

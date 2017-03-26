@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+        Commands\AutoMaticSeed::class
     ];
 
     /**
@@ -36,5 +37,6 @@ class Kernel extends ConsoleKernel
     protected function commands()
     {
         require base_path('routes/console.php');
+        require ('Commands/AutoMaticSeed.php');
     }
 }

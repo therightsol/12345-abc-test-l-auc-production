@@ -12,6 +12,12 @@ $factory(\Modules\Users\Entities\UserModel::class, function ($faker) {
     $lastName = $faker->lastName;
     $password = 'secret';
 
+    $base_url = 'images/2017/default-images/';
+    $image_number = rand(1, 10);
+    if ($image_number < 10) $image_number = '0' . $image_number;
+
+    $image_path = $base_url . $image_number . '.jpg';
+
     return [
         'username' => $faker->userName,
         'status'       =>  $faker->randomElement(['closed', 'open']),
@@ -20,7 +26,7 @@ $factory(\Modules\Users\Entities\UserModel::class, function ($faker) {
         'email' => $faker->email,
         'password' => Hash::make($password),
         'url' => $faker->url,
-        'picture' => $faker->imageUrl(400,400, 'people'),
+        'picture' => $image_path,
         'contact_number' => '0' . $faker->numberBetween(300,350) . '-' . $faker->numberBetween(1000000,9999999),
         'user_role'       =>  $faker->randomElement(['admin', 'staff', 'auctioneer', 'bidder']),
         'updated_by'      => null,

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\CommonBackend\Http\Filters;
 use Modules\EngineTypes\Http\Filters\EngineTypesFilter;
 use Modules\EngineTypes\Entities\EngineType;
 
@@ -15,10 +16,13 @@ class EngineTypesController extends Controller
 
     /**
      * Display a listing of the resource.
+     * @param Filters $filter
+     * @param Request $request
      * @return Response
      */
-    public function index(EngineTypesFilter $filter, Request $request)
+    public function index(Filters $filter, Request $request)
     {
+        $filter->column = ['id','title'];
         $engineTypes = EngineType::filter($filter)
             ->paginate(\Helper::limit($request));
         return view('enginetypes::index', compact('engineTypes'));

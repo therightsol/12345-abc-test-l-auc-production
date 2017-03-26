@@ -6,6 +6,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\CommonBackend\Http\Filters;
 use Modules\Features\Entities\Feature;
 use Modules\Features\Http\Filters\FeaturesFilter;
 
@@ -15,10 +16,13 @@ class FeaturesController extends Controller
 
     /**
      * Display a listing of the resource.
+     * @param Filters $filter
+     * @param Request $request
      * @return Response
      */
-    public function index(FeaturesFilter $filter, Request $request)
+    public function index(Filters $filter, Request $request)
     {
+        $filter->column = ['id','title', 'icon_path'];
         $features = Feature::filter($filter)
             ->paginate(\Helper::limit($request));
         return view('features::index', compact('features'));

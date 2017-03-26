@@ -10,17 +10,21 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\CarCompanies\Entities\CarCompany;
 use Modules\CarCompanies\Http\Filters\CarCompaniesFilter;
+use Modules\CommonBackend\Http\Filters;
+
 class CarCompaniesController extends Controller
 {
     use ValidatesRequests;
 
     /**
      * Display a listing of the resource.
+     * @param Filters $filter
+     * @param Request $request
      * @return Response
      */
-    public function index(CarCompaniesFilter $filter, Request $request)
+    public function index(Filters $filter, Request $request)
     {
-
+        $filter->column = ['id','company_name'];
         $carCompanies = CarCompany::filter($filter)
             ->paginate(\Helper::limit($request));
         return view('carcompanies::index', compact('carCompanies'));
