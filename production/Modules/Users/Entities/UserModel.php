@@ -19,6 +19,11 @@ class UserModel extends Model implements Authenticatable
         return $filters->apply($query);
     }
 
+    public function getForeignKey()
+    {
+        return 'user_id';
+    }
+
     public function isAdmin(){
         return $this->user_role == 'admin' ? true : false;
     }

@@ -21,8 +21,11 @@ class CommonBackendController extends Controller
      */
     public function index()
     {
-
+        if (\Auth::check())
             return view('commonbackend::index');
+
+
+        return redirect(route('dashboard-login'));
 
 
     }

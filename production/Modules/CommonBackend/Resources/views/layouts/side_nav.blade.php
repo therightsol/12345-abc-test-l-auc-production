@@ -27,6 +27,19 @@
 
                 <li class="gui-folder">
                     <a>
+                        <div class="gui-icon"><i class="fa fa-user fa-fw"></i></div>
+                        <span class="title">Manage Users</span>
+                    </a>
+                    <!--start submenu -->
+                    <ul>
+                        <li><a class="{{ Helper::isActiveRoute('admin.users.create') }}"  href="{{ route('admin.users.create') }}"><span class="title">Add User</span></a></li>
+                        <li><a class="{{ Helper::isActiveRoute('admin.users.index') . Helper::isActiveRoute('admin.users.edit') }}"  href="{{ route('admin.users.index') }}"><span class="title">View Users</span></a></li>
+                    </ul><!--end /submenu -->
+                </li>
+
+
+                <li class="gui-folder">
+                    <a>
                         <div class="gui-icon"><i class="fa fa-car fa-fw"></i></div>
                         <span class="title">Car</span>
                     </a>
@@ -42,8 +55,18 @@
 
                 </li>
 
+
+                <li>
+                    <a href="{{route('logout')}}" class="{{ Helper::isActiveRoute('logout') }}">
+                        <div class="gui-icon"><i class="fa fa-sign-out "></i></div>
+                        <span class="title">Logout</span>
+                    </a>
+                </li><!--end /menu-li -->
+
             </ul><!--end .main-menu -->
             <!-- END MAIN MENU -->
+
+
 
             <div class="menubar-foot-panel">
                 <small class="no-linebreak hidden-folded">

@@ -31,7 +31,7 @@
         <div class="col-sm-12">
             <div class="checkbox checkbox-styled">
                 <label class="checkbox-primary" data-toggle="collapse" data-target="#update_password_row">
-                    <input id="change_password" type="checkbox" name="isPasswordUpdate" value="1"
+                    <input  id="change_password" type="checkbox" name="isPasswordUpdate" value="1"
                            @if( old('isPasswordUpdate') == 1) checked @endif >Update Password?
                 </label>
             </div>
@@ -40,7 +40,7 @@
     <div class="panel-collapse collapse row @if( old('isPasswordUpdate') == 1) in @endif" id="update_password_row">
         <div class="col-sm-6">
             <div class="form-group {{ $errors->has('password') ? 'has-error' : ''}}">
-                <input type="password" class="form-control" value="{{old('password')}}" name="password"
+                <input  tabindex="6" type="password" class="form-control" value="{{old('password')}}" name="password"
                        id="password">
                 <label for="password">Password</label>
                 {!! $errors->first('password', '<p class="help-block">:message</p>') !!}
@@ -48,7 +48,7 @@
         </div>
         <div class="col-sm-6">
             <div class="form-group {{ $errors->has('confirm_password') ? 'has-error' : ''}}">
-                <input type="password" class="form-control" value="{{old('confirm_password')}}"
+                <input  tabindex="7" type="password" class="form-control" value="{{old('confirm_password')}}"
                        name="confirm_password" id="confirm_password">
                 <label for="confirm-password">Confirm Password</label>
                 {!! $errors->first('confirm_password', '<p class="help-block">:message</p>') !!}

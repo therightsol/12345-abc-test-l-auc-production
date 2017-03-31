@@ -76,16 +76,13 @@
                                 <input type="password" class="form-control" id="password" name="password">
                                 <label for="password">Password</label>
 
-                                <p class="help-block"><a href="{{route('reset-password')}}">Forgotten?</a></p>
                             </div>
                             <br>
 
                             <div class="row">
                                 <div class="col-xs-6 text-left">
                                     <div class="checkbox checkbox-inline checkbox-styled">
-                                        <label>
-                                            <input type="checkbox" > <span  class="rememberme">Remember me</span>
-                                        </label>
+
                                     </div>
                                     <input type="hidden" value="false" name="remember_me" id="remember_me">
 

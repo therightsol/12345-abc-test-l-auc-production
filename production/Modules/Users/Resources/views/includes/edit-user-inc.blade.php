@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-sm-7">
                 <div class="form-group {{ $errors->has('full_name') ? 'has-error' : ''}}">
-                    <input type="text" class="form-control"
+                    <input type="text" class="form-control" tabindex="1"
                            value="@if(!empty(old('full_name'))){{old('full_name')}}@elseif(isset($user->full_name)){{$user->full_name}}@endif"
                            id="full_name" name="full_name">
                     <label for="full_name">Full Name</label>
@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="form-group {{ $errors->has('contact_number') ? 'has-error' : ''}}">
-                    <input type="text" class="form-control"
+                    <input type="text" class="form-control"  tabindex="2"
                            value="@if(!empty(old('contact_number'))){{old('contact_number')}}@elseif(isset($user->contact_number)){{$user->contact_number}}@endif"
                            id="contact_number" name="contact_number">
                     <label for="contact_number">Contact Number</label>
