@@ -55,6 +55,22 @@
 
                 </li>
 
+                <li>
+                    <a href="{{route('admin.auctions.index')}}"  class="{{ Helper::isActiveResource('admin.auctions') }}" >
+                        <div class="gui-icon"><i class="fa fa-gavel" aria-hidden="true"></i>
+                        </div>
+                        <span class="title">Auctions</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('admin.biddings.index')}}"  class="{{ Helper::isActiveResource('admin.biddings') }}" >
+                        <div class="gui-icon"><i class="fa fa-money" aria-hidden="true"></i>
+                        </div>
+                        <span class="title">Bidding</span>
+                    </a>
+                </li>
+
+
 
                 <li>
                     <a href="{{route('logout')}}" class="{{ Helper::isActiveRoute('logout') }}">
