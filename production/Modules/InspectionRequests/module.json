@@ -1,0 +1,16 @@
+{
+    "name": "InspectionRequests",
+    "alias": "inspectionrequests",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\InspectionRequests\\Providers\\InspectionRequestsServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ],
+    "requires": []
+}
