@@ -4,9 +4,10 @@ namespace Modules\Biddings\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\Auctions\Entities\Auction;
+use Modules\CommonBackend\Entities\BaseModel;
 use Modules\Users\Entities\UserModel;
 
-class Bidding extends Model
+class Bidding extends BaseModel
 {
     protected $fillable = ['bid_amount', 'user_id', 'auction_id'];
 

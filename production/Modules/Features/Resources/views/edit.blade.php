@@ -1,4 +1,5 @@
 @extends('commonbackend::layouts.admin_app')
+@include('media::layoutfiles.embedd')
 
 @section('content')
     <div id="content">

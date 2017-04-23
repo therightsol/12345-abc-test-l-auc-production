@@ -2,7 +2,7 @@
 Route::group(
     [
 //        'middleware' => ['web', 'admin_login_check'],
-        'middleware' => ['web'],
+        'middleware' => ['web','has_role:admin,staff'],
         'prefix' => Helper::dashboardName(),
         'as'    =>  'admin.',
         'namespace' => 'Modules\Cars\Http\Controllers'
@@ -13,14 +13,6 @@ Route::group(
         Route::Resource('cars', 'CarsController', ['names' => Helper::ResourceNames('cars')]);
         Route::Resource('category', 'CategoryController', ['names' => Helper::ResourceNames('category')]);
 
-        Route::post('get-models', 'CarsController@getModels')->name('getModels');
     });
 
-
-// For Base Controllers
-
-
-Route::get('route', function(){
-    \Artisan::call('route:list');
-    dd(\Artisan::output());
-});
+Route::post('get-models', 'Modules\Cars\Http\Controllers\CarsController@getModels')->name('admin.getModels');

@@ -4,16 +4,17 @@
     <table class="table table-striped table-hover dataTable">
         <thead>
         <tr>
-            <th class="sorting" data-table="feature.id">Id</th>
+            <th>Id</th>
             <th class="sorting" data-table="feature.title">Title</th>
             <th>Action</th>
-
         </tr>
         </thead>
         <tbody>
+        @php($i = $features->firstItem())
+
         @foreach($features as $feature)
             <tr>
-                <td>{{ $feature->id }}</td>
+                <td>{{ $i }}</td>
                 <td>{{ $feature->title }}</td>
                 <td width="150">
                     <a href="{{ route(Helper::route('edit'),$feature->id) }}" type="button" class="btn btn-icon-toggle" data-toggle="tooltip"
@@ -27,6 +28,7 @@
                     </button>
                 </td>
             </tr>
+            @php($i++)
 
         @endforeach
         </tbody>

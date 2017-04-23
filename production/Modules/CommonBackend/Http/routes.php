@@ -23,7 +23,6 @@ Route::group(
     function () use ($dashboardName, $prefixedResourceNames)
 {
     //Route::Resource('commonbackend', 'CommonBackendController', ['names' => $prefixedResourceNames('commonbackend')]);
-
     Route::get('/', 'CommonBackendController@index')->name('backend');
     Route::get('/login', 'CommonBackendController@login')->name('dashboard-login');
     Route::post('/login', 'CommonBackendController@do_login')->name('do-login');
@@ -31,3 +30,17 @@ Route::group(
     Route::get('/logout', 'CommonBackendController@logout')->name('logout');
 
 });
+Route::group(
+    [
+        'middleware' => ['web','has_role:bidder,auctioneer'],
+        'prefix' => 'account',
+        'as'    =>  'user.',
+        'namespace' => 'Modules\Biddings\Http\Controllers'
+    ],
+    function(  )
+    {
+
+        Route::get('/', function(){
+            return view('commonbackend::index');
+        })->name('account');
+    });

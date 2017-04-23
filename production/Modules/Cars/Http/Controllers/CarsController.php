@@ -19,6 +19,7 @@ use Modules\CommonBackend\Http\Filters;
 use Modules\EngineTypes\Entities\EngineType;
 use Modules\Features\Entities\Feature;
 use Modules\Media\Entities\Post;
+use function Sodium\add;
 
 class CarsController extends Controller
 {
@@ -78,24 +79,34 @@ class CarsController extends Controller
             'car_model_id' => 'required',
             'kilometers' => 'integer|min:0',
         ]);
-
-
-        $isSuccess = Car::create(
-            $request->only(
-                'title', 'car_model_id', 'engine_type_id', 'trim',
-                'exterior_color', 'interior_color', 'grade','manufacturing_year',
-                'kilometers', 'number_plate','engine_number', 'chassis_number',
-                'city_of_registration', 'transmission', 'body_type', 'drivetrain')
+	
+		$gallery_images = $request->has('gallery_images_ids') ? $request->input('gallery_images_ids') : '';
+	
+		/*dd(\Auth::id());
+		
+		dd($request->all());*/
+		
+		$inputArr = $request->only(
+			'title', 'car_model_id', 'engine_type_id', 'trim',
+			'exterior_color', 'interior_color', 'grade','manufacturing_year',
+			'kilometers', 'number_plate','engine_number', 'chassis_number',
+			'city_of_registration', 'transmission', 'body_type', 'drivetrain');
+		
+		$inputArr['user_id'] = \Auth::id();
+		
+		
+		$isSuccess = Car::create(
+           $inputArr
         );
-        $gallery = explode(',', $request->input('gallery_images_ids'));
+		
         $isSuccess->meta()->saveMany([
             new CarMeta(['meta_key' => 'picture', 'meta_value' => $request->input('picture')]),
-            new CarMeta(['meta_key' => 'gallery', 'meta_value' => $gallery])
+            new CarMeta(['meta_key' => 'gallery', 'meta_value' => ($gallery_images)])
         ]);
         $isSuccess->categories()->attach($request->input('categories'));
         $isSuccess->features()->attach($request->input('features'));
         return ($isSuccess)?
-            back()->with('alert-success', 'CarsModel Created Successfully')
+            back()->with('alert-success', 'Car Created Successfully')
             : back()->with('alert-danger', 'Error: please try again.');
 
     }
@@ -127,14 +138,22 @@ class CarsController extends Controller
 
         $carMeta = $car->meta->pluck('meta_value', 'meta_key');
         $featured_img = isset($carMeta['picture'])?$carMeta['picture']:false;
-        $imagesArr = isset($carMeta['gallery'])?$carMeta['gallery']:false;
+		$gallery_images = isset($carMeta['gallery'])?$carMeta['gallery']:false;
 
-        if(!empty($imagesArr)){
+        /*if(!empty($imagesArr)){
             $imagesArr = Post::whereIn('id', $imagesArr)->pluck('content', 'id');
-        }
+        }*/
         $carCompanyModels = CarModel::where('car_company_id', $car->carModel->carCompany->id)->pluck('model_name', 'id');
 
-        return view('cars::edit', compact('imagesArr','featured_img','car','carCompanies','carCompanyModels', 'categories','engine_types', 'features'));
+        //echo '<tt><pre>' . var_export(json_encode($gallery_images), true) . '</pre></tt>';
+        
+		/*$gallery_images = isset($gallery_images[0]) ? json_decode($gallery_images): "";
+		
+		var_export($gallery_images);
+			exit('----');*/
+        
+        
+        return view('cars::edit', compact('gallery_images','featured_img','car','carCompanies','carCompanyModels', 'categories','engine_types', 'features'));
     }
 
     /**
@@ -159,10 +178,10 @@ class CarsController extends Controller
                 'city_of_registration', 'transmission', 'body_type', 'drivetrain')
         );
         $car->meta()->forceDelete();
-        $gallery = explode(',', $request->input('gallery_images_ids'));
+		$gallery_images = $request->has('gallery_images_ids') ? $request->input('gallery_images_ids') : '';
         $car->meta()->saveMany([
             new CarMeta(['meta_key' => 'picture', 'meta_value' => $request->input('picture')]),
-            new CarMeta(['meta_key' => 'gallery', 'meta_value' => $gallery])
+            new CarMeta(['meta_key' => 'gallery', 'meta_value' => $gallery_images])
         ]);
         ($request->input('categories'))
             ? $car->categories()->sync($request->input('categories'))

@@ -2,6 +2,7 @@
 
 namespace Modules\CommonBackend\Providers;
 
+use Modules\CommonBackend\Http\Middleware\HasRole;
 use Modules\CommonBackend\Http\Middleware\LoginCheckMiddleWare as LoginCheckMiddleware;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
@@ -36,8 +37,10 @@ class CommonBackendServiceProvider extends ServiceProvider
         $this->registerViews();
 
         $router->middleware('admin_login_check', LoginCheckMiddleware::class);
+        $router->middleware('has_role', HasRole::class);
         $loader = \Illuminate\Foundation\AliasLoader::getInstance();
         $loader->alias('admin_login_check', LoginCheckMiddleware::class);
+        $loader->alias('has_role', HasRole::class);
 
 
 

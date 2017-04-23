@@ -24,6 +24,16 @@
     <!-- END STYLESHEETS -->
 
 
+    <style>
+        .table thead th:first-child{
+            text-transform: uppercase;
+        }
+        @if(Auth::user()->hasRole(['staff']))
+            .delete-row{
+            display: none;
+        }
+            @endif
+    </style>
 
 
     <!-- END STYLESHEETS -->

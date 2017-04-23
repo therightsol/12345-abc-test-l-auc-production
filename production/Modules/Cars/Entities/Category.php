@@ -3,8 +3,9 @@
 namespace Modules\Cars\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\CommonBackend\Entities\BaseModel;
 
-class Category extends Model
+class Category extends BaseModel
 {
     protected $fillable = ['id', 'category', 'category_parent_id'];
 

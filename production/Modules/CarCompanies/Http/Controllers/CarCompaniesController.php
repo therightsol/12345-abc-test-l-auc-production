@@ -95,7 +95,7 @@ class CarCompaniesController extends Controller
             'company_name' => $request->input('company_name')
         ]);
         return ($isSuccess) ?
-            back()->with('alert-success', 'Car Company Created Successfully')
+            back()->with('alert-success', 'Car Company Updated Successfully')
             : back()->with('alert-danger', 'Error: please try again.');
     }
 

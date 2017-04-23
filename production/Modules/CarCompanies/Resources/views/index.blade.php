@@ -4,16 +4,18 @@
     <table class="table table-striped table-hover dataTable">
         <thead>
         <tr>
-            <th class="sorting" data-table="CarCompaniesModel.id">Id</th>
+            <th>Id</th>
             <th class="sorting" data-table="CarCompaniesModel.company_name">Company Name</th>
             <th>Action</th>
 
         </tr>
         </thead>
         <tbody>
+        @php($i = $carCompanies->firstItem())
+
         @foreach($carCompanies as $carCompany)
             <tr>
-                <td>{{ $carCompany->id }}</td>
+                <td>{{ $i }}</td>
                 <td>{{ $carCompany->company_name }}</td>
                 <td width="150">
                     <a href="{{ route(Helper::route('edit'),$carCompany->id) }}" type="button" class="btn btn-icon-toggle" data-toggle="tooltip"
@@ -27,6 +29,7 @@
                     </button>
                 </td>
             </tr>
+            @php($i++)
 
         @endforeach
         </tbody>

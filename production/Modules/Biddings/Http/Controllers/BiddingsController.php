@@ -107,7 +107,7 @@ class BiddingsController extends Controller
         $this->validate($request, [
             'auction_id' => 'required',
             'user_id' => 'required',
-            'bid_amount' => 'required',
+            'bid_amount' => 'required|numeric',
         ]);
 
         $isSuccess = Bidding::create($request->only('user_id', 'auction_id', 'bid_amount'));

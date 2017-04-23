@@ -4,17 +4,18 @@
     <table class="table table-striped table-hover dataTable">
         <thead>
         <tr>
-            <th class="sorting" data-table="CarModel.id">Id</th>
-            <th class="sorting" data-table="CarModel.company_name">Model Name</th>
+            <th>Id</th>
+            <th class="sorting" data-table="CarModel.model_name">Model Name</th>
             <th class="sorting" data-table="CarCompany.company_name">Company Name</th>
             <th>Action</th>
-
         </tr>
         </thead>
         <tbody>
+        @php($i = $carModels->firstItem())
+
         @foreach($carModels as $carModel)
             <tr>
-                <td>{{ $carModel->id }}</td>
+                <td>{{ $i }}</td>
                 <td>{{ $carModel->model_name }}</td>
                 <td>{{ $carModel->company_name }}</td>
                 <td width="150">
@@ -29,7 +30,7 @@
                     </button>
                 </td>
             </tr>
-
+            @php($i++)
         @endforeach
         </tbody>
     </table>

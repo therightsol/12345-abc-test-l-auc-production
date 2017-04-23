@@ -11,9 +11,11 @@
         </tr>
         </thead>
         <tbody>
+        @php($i = $engineTypes->firstItem())
+
         @foreach($engineTypes as $engineType)
             <tr>
-                <td>{{ $engineType->id }}</td>
+                <td>{{ $i }}</td>
                 <td>{{ $engineType->title }}</td>
                 <td width="150">
                     <a href="{{ route(Helper::route('edit'),$engineType->id) }}" type="button" class="btn btn-icon-toggle" data-toggle="tooltip"
@@ -27,7 +29,7 @@
                     </button>
                 </td>
             </tr>
-
+            @php($i++)
         @endforeach
         </tbody>
     </table>

@@ -98,7 +98,7 @@ class CarModelsController extends Controller
             $request->only('model_name', 'car_company_id')
         );
         return ($isSuccess) ?
-            back()->with('alert-success', 'Car Model Created Successfully')
+            back()->with('alert-success', 'Car Model Updated Successfully')
             : back()->with('alert-danger', 'Error: please try again.');
     }
 

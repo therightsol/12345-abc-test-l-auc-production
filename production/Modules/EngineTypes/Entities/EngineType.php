@@ -3,8 +3,9 @@
 namespace Modules\EngineTypes\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\CommonBackend\Entities\BaseModel;
 
-class EngineType extends Model
+class EngineType extends BaseModel
 {
     protected $fillable = ['title'];
 

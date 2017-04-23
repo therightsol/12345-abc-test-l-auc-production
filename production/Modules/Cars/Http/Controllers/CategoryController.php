@@ -103,7 +103,7 @@ class CategoryController extends Controller
             'category' => $request->input('category')
         ]);
         return ($isSuccess) ?
-            back()->with('alert-success', 'Category Created Successfully')
+            back()->with('alert-success', 'Category Updated Successfully')
             : back()->with('alert-danger', 'Error: please try again.');
     }
 

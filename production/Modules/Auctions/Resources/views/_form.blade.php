@@ -12,7 +12,7 @@
             @endif
         </div>
         <div class="form-group{{ $errors->has('bid_starting_amount') ? ' has-error' : '' }}">
-            {{ Form::text('bid_starting_amount', null ,['class' => 'form-control']) }}
+            {{ Form::number('bid_starting_amount', null ,['min' => 0, 'class' => 'form-control']) }}
             {{ Form::label('bid_starting_amount', 'Starting Amount:') }}
             @if ($errors->has('bid_starting_amount'))
                 <span class="help-block">
@@ -46,14 +46,8 @@
         </div>
 
 
-        <div class="card-actionbar">
-            <div class="card-actionbar-row">
-                {{--  @if(url()->current() !== url()->previous())
-                      <a href="{{ url()->previous() }}" class="btn btn-flat btn-primary ink-reaction pull-left">Go Back</a>
-                  @endif--}}
-                <button type="submit" class="btn btn-flat btn-primary ink-reaction">{{ $buttonText }}</button>
-            </div>
-        </div>
+        @include('commonbackend::layouts._form-action')
+
         <div class="spinnerLoader">
             <i class="ajax-loader medium animate-spin"></i>
         </div>

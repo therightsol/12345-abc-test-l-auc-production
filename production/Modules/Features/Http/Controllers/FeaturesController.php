@@ -49,7 +49,10 @@ class FeaturesController extends Controller
             'title' => 'required|unique:features,title',
         ]);
 
-        $isSuccess = Feature::create($request->only('title','icon_path'));
+        $isSuccess = Feature::create([
+            'title' => $request->title,
+            'icon_path' => $request->picture
+        ]);
         return ($isSuccess) ?
             back()->with('alert-success', 'Feature Created Successfully')
             : back()->with('alert-danger', 'Error: please try again.');
@@ -73,7 +76,10 @@ class FeaturesController extends Controller
         $feature = Feature::find($id);
         if(!$feature) return redirect()->route(Helper::route('index'));
 
-        return view('features::edit', compact('feature'));
+        $featured_img = $feature->icon_path;
+
+
+        return view('features::edit', compact('feature', 'featured_img'));
     }
 
     /**
@@ -88,11 +94,12 @@ class FeaturesController extends Controller
         ]);
 
         if (!$feature = Feature::find($id)) return redirect()->route(Helper::route('index'));
-        $isSuccess = $feature->update(
-            $request->only('title','icon_path')
-        );
+        $isSuccess = $feature->update([
+            'title' => $request->title,
+            'icon_path' => $request->picture
+        ]);
         return ($isSuccess) ?
-            back()->with('alert-success', 'Feature Created Successfully')
+            back()->with('alert-success', 'Feature Updated Successfully')
             : back()->with('alert-danger', 'Error: please try again.');
     }
 

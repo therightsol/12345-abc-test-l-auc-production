@@ -12,29 +12,30 @@
                 </span>
                     @endif
                 </div>
-                <div class="form-group{{ $errors->has('icon_path') ? ' has-error' : '' }}">
-                    {{ Form::text('icon_path', null ,['class' => 'form-control']) }}
-                    {{ Form::label('icon_path', 'Icon Path:') }}
-                    @if ($errors->has('icon_path'))
-                        <span class="help-block">
-                    <strong>{{ $errors->first('icon_path') }}</strong>
+
+        <div style="text-align: center;" class="form-group{{ $errors->has('picture') ? ' has-error' : '' }}">
+            @yield('insert-image-code')
+            {{ Form::label('', 'Icon') }}
+            @if ($errors->has('picture'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('picture') }}</strong>
                 </span>
-                    @endif
-                </div>
+            @endif
+        </div>
 
 
 
     </div><!--end .card-body -->
-    <div class="card-actionbar">
-        <div class="card-actionbar-row">
-          {{--  @if(url()->current() !== url()->previous())
-                <a href="{{ url()->previous() }}" class="btn btn-flat btn-primary ink-reaction pull-left">Go Back</a>
-            @endif--}}
-            <button type="submit" class="btn btn-flat btn-primary ink-reaction">{{ $buttonText }}</button>
-        </div>
-    </div>
+    @include('commonbackend::layouts._form-action')
+
     <div class="spinnerLoader">
         <i class="ajax-loader medium animate-spin"></i>
     </div>
 
 </div>
+
+@section('js')
+    @parent
+    <script src="{{Module::asset("media:js/custom-functions.js")}}"></script>
+
+@endsection

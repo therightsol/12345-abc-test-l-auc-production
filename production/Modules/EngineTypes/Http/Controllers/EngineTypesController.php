@@ -92,7 +92,7 @@ class EngineTypesController extends Controller
             $request->only('title')
         );
         return ($isSuccess) ?
-            back()->with('alert-success', 'Engine Type Created Successfully')
+            back()->with('alert-success', 'Engine Type Updated Successfully')
             : back()->with('alert-danger', 'Error: please try again.');
     }
 

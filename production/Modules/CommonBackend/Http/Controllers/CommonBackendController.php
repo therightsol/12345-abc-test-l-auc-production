@@ -15,6 +15,7 @@ use Nwidart\Modules\Facades\Module;
 class CommonBackendController extends Controller
 {
     use ValidatesRequests;
+
     /**
      * Display a listing of the resource.
      * @return Response
@@ -24,10 +25,7 @@ class CommonBackendController extends Controller
         if (\Auth::check())
             return view('commonbackend::index');
 
-
         return redirect(route('dashboard-login'));
-
-
     }
 
     public function not_authorized()
@@ -38,14 +36,15 @@ class CommonBackendController extends Controller
 
 
     /**
-	 * show login form. if user is logged in then redirect.
+     * show login form. if user is logged in then redirect.
      * @param Request $request
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
-     */public function login(Request $request)
+     */
+    public function login(Request $request)
     {
-        if (\Auth::check()){
-			$already_logged_in = true;
+        if (\Auth::check()) {
+            $already_logged_in = true;
             return redirect(route('backend'))->with(compact('already_logged_in'));
         }
         return view('commonbackend::login');
@@ -53,6 +52,11 @@ class CommonBackendController extends Controller
 
     public function logout()
     {
+
+        if (\Auth::user()->hasRole(['auctioneer'])){
+            \Auth::logout();
+            return redirect(url('/'));
+        }
         \Auth::logout();
         return redirect(route('backend'));
     }
@@ -60,24 +64,33 @@ class CommonBackendController extends Controller
     public function do_login(Request $request)
     {
         $this->validate($request, [
-            'username'  => 'required|max:255|min:3',
-            'password'  =>  'required|max:255|min:5'
+            'username' => 'required|max:255|min:3',
+            'password' => 'required|max:255|min:5'
         ]);
 
 
-        \Auth::attempt(['username' => $request->username, 'password' => $request->password, 'user_role' => 'admin'], $request->remember_me);
+        \Auth::attempt(
+            [
+                'username' => $request->username,
+                'password' => $request->password,
+            ],
+            $request->remember_me);
 
-        if (\Auth::check()){
-            return redirect(route('backend'));
-        }else {
-            $user = UserModel::where('username', $request->username)->get();
+        if (\Auth::check()) {
 
-            $msg = isset($user) ? "Sorry! you do not have privillage to open this page."
-                : 'Provided username / password was wrong.';
-
-
-            return view('commonbackend::login')->withErrors([$msg]);
+            if (\Auth::user()->user_role == 'admin' or \Auth::user()->user_role == 'staff') {
+                return redirect(route('backend'));
+            } else {
+                \Auth::logout();
+            }
         }
+        $user = UserModel::where('username', $request->username)->get();
+        $msg = isset($user) ? "Sorry! you do not have privillage to open this page."
+            : 'Provided username / password was wrong.';
+
+
+        return view('commonbackend::login')->withErrors([$msg]);
+
 
     }
 

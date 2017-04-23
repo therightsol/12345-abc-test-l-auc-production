@@ -68,7 +68,7 @@ class UsersController extends Controller
 
         $validationArr = [
             'username'         => 'required|max:60|min:3|unique:users,username',
-            'full_name'        => 'required|max:255|min:2',
+            'fullname'        	=> 'required|max:255|min:2',
             'email'            => 'required|max:255|email|unique:users,email',
             'status'           => 'required',
             'cnic'             => 'required|max:15',

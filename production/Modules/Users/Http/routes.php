@@ -16,7 +16,7 @@ $prefixedResourceNames = function ($prefix) {
 
 Route::group(
     [
-        'middleware' => ['web', 'admin_login_check'],
+        'middleware' => ['web','has_role:admin,staff'],
         'prefix' => 'backend',
         'as'    =>  'admin.',
         'namespace' => 'Modules\Users\Http\Controllers'

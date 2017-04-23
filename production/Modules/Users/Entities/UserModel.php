@@ -2,13 +2,17 @@
 
 namespace Modules\Users\Entities;
 
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
+use Modules\CommonBackend\Entities\BaseModel;
 
-class UserModel extends Model implements Authenticatable
+class UserModel extends BaseModel implements Authenticatable, CanResetPassword
 {
-    use softDeletes;
+    use softDeletes, Notifiable;
 
     protected $fillable = ['username', 'email', 'password'];
 
@@ -22,6 +26,11 @@ class UserModel extends Model implements Authenticatable
     public function getForeignKey()
     {
         return 'user_id';
+    }
+
+    public function hasRole($role)
+    {
+        return in_array($this->user_role, $role);
     }
 
     public function isAdmin(){
@@ -96,4 +105,30 @@ class UserModel extends Model implements Authenticatable
         // TODO: Implement getRememberTokenName() method.
         return 'remember_token';
     }
+	
+	/**
+	 * Get the e-mail address where password reset links are sent.
+	 *
+	 * @return string
+	 */
+	public function getEmailForPasswordReset ()
+	{
+		// TODO: Implement getEmailForPasswordReset() method.
+		return $this->attributes['email'];
+	}
+	
+	/**
+	 * Send the password reset notification.
+	 *
+	 * @param  string $token
+	 *
+	 * @return void
+	 */
+	public function sendPasswordResetNotification ($token)
+	{
+		// TODO: Implement sendPasswordResetNotification() method.
+		$this->notify(new ResetPasswordNotification($token));
+		
+	}
+
 }
