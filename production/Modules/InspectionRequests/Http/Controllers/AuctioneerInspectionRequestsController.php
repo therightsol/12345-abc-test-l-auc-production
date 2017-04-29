@@ -14,6 +14,7 @@ use Modules\Cars\Entities\Category;
 use Modules\CommonBackend\Http\Filters;
 use Modules\EngineTypes\Entities\EngineType;
 use Modules\Features\Entities\Feature;
+use Modules\GeneralSettings\Entities\GeneralSetting;
 use Modules\InspectionRequests\Entities\InspectionRequest;
 use Modules\Users\Entities\UserModel;
 
@@ -29,13 +30,31 @@ class AuctioneerInspectionRequestsController extends Controller
      */
     public function index(Filters $filter, Request $request)
     {
-        $filter->belongsTo = [Car::class =>['title']];
-        $filter->belongsTo = [UserModel::class =>['username']];
-        $filter->column = ['id','date_of_inspection', 'time_of_inspection'];
-        $inspections = InspectionRequest::filter($filter)
-            ->paginate(\Helper::limit($request));
+//        $filter->belongsTo = [Car::class =>['title', 'is_inspection_complete']];
+//        $filter->belongsTo = [UserModel::class =>['username']];
+//        $filter->column = ['id','date_of_inspection', 'time_of_inspection'];
+//        $inspections = InspectionRequest::filter($filter)
+//            ->where('user_id', \Auth::user()->id)
+//            ->paginate(\Helper::limit($request));
 
-        return view('inspectionrequests::index', compact('inspections'));
+        $filter->belongsTo = [UserModel::class => ['username'], Car::class => ['title', 'is_inspection_complete']];
+        $filter->column = ['id', 'date_of_inspection', 'time_of_inspection'];
+        $query = InspectionRequest::query();
+        $query->where('inspection_requests.user_id', \Auth::user()->id);
+        $query->filter($filter);
+        $inspection_unique_id = GeneralSetting::where('key', 'inspection_unique_id')->first();
+        if ($inspection_unique_id) {
+            $inspection_unique_id = $inspection_unique_id->value;
+//            return ltrim($request->search, $inspection_unique_id);
+            if(ltrim($request->search, $inspection_unique_id)){
+                $query->orWhere('inspection_requests.id',ltrim($request->search, $inspection_unique_id));
+            }
+        }
+
+
+        $inspections = $query->paginate(\Helper::limit($request));
+
+        return view('inspectionrequests::index', compact('inspections', 'inspection_unique_id'));
     }
 
     /**
@@ -124,6 +143,12 @@ class AuctioneerInspectionRequestsController extends Controller
         $start_date = Carbon::createFromFormat('d F Y', trim($sdate[0]));
         $start_time = trim($sdate[1]);
 
+
+
+        if (InspectionRequest::where('date_of_inspection', $start_date->format('Y-m-d'))->where('time_of_inspection', $start_time)->first()){
+            return back()->with('alert-danger', 'Kindly Select Different time. inspection time not available.');
+        }
+
         $isSuccess = InspectionRequest::create([
             'car_id' => $car->id,
             'user_id' => \Auth::user()->id,
@@ -166,18 +191,23 @@ class AuctioneerInspectionRequestsController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'car_id' => 'required',
-            'user_id' => 'required',
             'date_of_inspection' => 'required',
         ]);
+
         $sdate = explode('--', $request->input('date_of_inspection'));
         $start_date = Carbon::createFromFormat('d F Y', trim($sdate[0]));
         $start_time = trim($sdate[1]);
 
         if (!$inspection = InspectionRequest::find($id)) return redirect()->route(Helper::route('index'));
+
+
+        if (InspectionRequest::where('date_of_inspection', $start_date->format('Y-m-d'))
+            ->where('time_of_inspection', $start_time)
+            ->where('id', '!=', $inspection->id)
+            ->first()){
+            return back()->with('alert-danger', 'Kindly Select Different time. inspection time not available.');
+        }
         $isSuccess = $inspection->update([
-            'car_id' => $request->input('car_id'),
-            'user_id' => $request->input('user_id'),
             'date_of_inspection' => $start_date,
             'time_of_inspection' => $start_time,
         ]);

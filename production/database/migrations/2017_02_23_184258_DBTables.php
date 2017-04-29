@@ -197,8 +197,8 @@ class DBTables extends Migration
 
             $table->foreign('car_id')
                 ->references('id')->on('cars')
-                ->onDelete('no action')
-                ->onUpdate('no action');
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
 
         });
@@ -323,6 +323,7 @@ class DBTables extends Migration
             $table->integer('kilometers', false, true)->nullable()->unsigned();
             $table->string('engine_number', 255)->nullable();
             $table->string('chassis_number', 255)->nullable();
+            $table->tinyInteger('is_inspection_complete', false, true)->nullable()->unsigned();
             $table->string('number_plate', 255)->nullable();
             $table->string('city_of_registration', 255)->nullable();
             $table->enum('transmission', ['automatic', 'manual'])->nullable();

@@ -16,12 +16,13 @@ Route::group(
 Route::group(
     [
         'middleware' => ['web','has_role:auctioneer'],
-        'prefix' => 'auctioneer/account',
+        'prefix' => 'account',
         'as'    =>  'auctioneer.',
         'namespace' => 'Modules\InspectionRequests\Http\Controllers'
     ],
-    function(  )
+    function()
     {
         Route::resource('inspection', 'AuctioneerInspectionRequestsController',['names' => Helper::ResourceNames('inspection')]);
         Route::post('storeCar', 'AuctioneerInspectionRequestsController@storeCar')->name('storeCar');
     });
+

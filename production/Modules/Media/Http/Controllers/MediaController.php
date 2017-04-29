@@ -13,15 +13,14 @@ use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 
 
-
 class MediaController extends Controller
 {
 
     // Check requried module
     public function __construct()
     {
-        if (! $this->isModuleEnabled('post')){}
-            //dd('Please enable post module first');
+        /*if (! $this->isModuleEnabled('post'))
+            dd('Please enable post module first');*/
 
     }
 
@@ -54,13 +53,13 @@ class MediaController extends Controller
         if ($page)
             $request['page'] = $page;
 
+        //
+        //abort(511, 'Your are not allowed to perform this action.');
 
         $post_status = PostStatus::where('status_title', 'published')->get(['id']);
 
-        if (! isset($post_status[0])){
-            return '<p class="alert alert-danger">please add post publish status first</p>';
-        }
-
+        if (! isset($post_status[0]->id))
+            $post_status[0]->id = null;
 
         $selected_files = Post::where('post_type', 'attachment')
             ->where('post_status_id', $post_status[0]->id);
@@ -209,7 +208,6 @@ class MediaController extends Controller
             $filename = time().'-'.$name;
             $target = $picture->move($path, $filename );
 
-
             $is_image = explode('/', $mime);
 
             if ( $is_image[0] == 'image' ) {
@@ -246,7 +244,6 @@ class MediaController extends Controller
                 }
 
             }
-
             $post_status = PostStatus::where('status_title', 'published')->get(['id']);
 
             $post = new \Modules\Media\Entities\Post();
@@ -254,9 +251,9 @@ class MediaController extends Controller
             $post->content = $url . '/' . $filename;
             $post->post_type = 'attachment';
             $post->mime_type = $mime;
+            $post->post_status_id = $post_status[0]->id;;
             $post->short_description = json_encode(['image-folder' => 'images/users']);
-            $post->post_status_id = $post_status[0]->id;
-
+ 
             if ( $post->save() )
                 return json_encode([ ['filename' => $post->content, 'id' => $post->id, 'mime_type' => $post->mime_type], 'status' => 'success']);
 

@@ -77,6 +77,7 @@ class CarsController extends Controller
         $this->validate($request,[
             'title' => 'required',
             'car_model_id' => 'required',
+            'user_id' => 'required',
             'kilometers' => 'integer|min:0',
         ]);
 	
@@ -85,9 +86,11 @@ class CarsController extends Controller
 		/*dd(\Auth::id());
 		
 		dd($request->all());*/
+
+//		return $request->all();
 		
 		$inputArr = $request->only(
-			'title', 'car_model_id', 'engine_type_id', 'trim',
+			'title','user_id', 'car_model_id', 'engine_type_id', 'trim',
 			'exterior_color', 'interior_color', 'grade','manufacturing_year',
 			'kilometers', 'number_plate','engine_number', 'chassis_number',
 			'city_of_registration', 'transmission', 'body_type', 'drivetrain');
@@ -133,7 +136,7 @@ class CarsController extends Controller
         $features = Feature::pluck('title', 'id');
 
         $car = Car::whereId($id)->with(
-            ['engineType','categories','carModel.carCompany','features', 'meta']
+            ['engineType','categories','carModel.carCompany','features', 'meta', 'user']
         )->first();
 
         $carMeta = $car->meta->pluck('meta_value', 'meta_key');
@@ -166,13 +169,14 @@ class CarsController extends Controller
         $this->validate($request,[
             'title' => 'required',
             'car_model_id' => 'required',
+            'user_id' => 'required',
             'kilometers' => 'integer|min:0',
         ]);
         if (!$car = Car::find($id)) return back()->with('alert-danger', 'Error: please try again.');
 
         $isSuccess = $car->update(
             $request->only(
-                'title', 'car_model_id', 'engine_type_id', 'trim',
+                'title', 'user_id', 'car_model_id', 'engine_type_id', 'trim',
                 'exterior_color', 'interior_color', 'grade','manufacturing_year',
                 'kilometers', 'number_plate','engine_number', 'chassis_number',
                 'city_of_registration', 'transmission', 'body_type', 'drivetrain')

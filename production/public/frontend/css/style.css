@@ -4786,18 +4786,18 @@ table.technical tbody tr td {
 .efficiency-rating ul {
 	padding: 0;
 	margin: 7px 0 0 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
 }
 
 .efficiency-rating ul li {
 	list-style: none;
-	display: inline-block;
-	margin-right: 21px;
 	line-height: 30px;
+	min-width: 50%;
+	max-width: 50%;
 }
 
-.efficiency-rating ul li:last-child {
-	margin-left: 18px;
-}
 
 .efficiency-rating ul li small, .efficiency-rating ul li strong {
 	display: block;
@@ -4810,7 +4810,7 @@ table.technical tbody tr td {
 }
 
 .efficiency-rating ul li strong {
-	font-size: 36px;
+	font-size: 30px;
 	font-weight: 700;
 }
 
@@ -4833,29 +4833,8 @@ table.technical tbody tr td {
 	position: relative;
 }
 
-.efficiency-rating ul li.fuel {
-	position: absolute;
-	top: 37px;
-	left: 50%;
-	margin-left: -30px;
-}
-
 .efficiency-rating ul li.fuel img {
 	left: 0;
-}
-
-.efficiency-rating ul li.city_mpg {
-	position: absolute;
-	left: 25%;
-	margin-right: 0;
-	margin-left: -30px;
-}
-
-.efficiency-rating ul li.hwy_mpg {
-	position: absolute;
-	right: 25%;
-	margin-left: 0;
-	margin-right: -30px;
 }
 
 .efficiency-rating p {
@@ -4863,7 +4842,7 @@ table.technical tbody tr td {
 	text-align: center;
 	color: #3a3a3a;
 	line-height: 14px;
-	margin: 85px auto 0px;
+	margin: 20px auto 0px;
 	padding: 0;
 	width: 75%;
 }

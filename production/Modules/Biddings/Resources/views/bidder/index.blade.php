@@ -31,18 +31,18 @@
                                         @php($i = $biddings->firstItem())
 
                                         @foreach($biddings as $bid)
-                                            <tr>
+                                            <tr @if($bid->auction->winner_user_id == \Auth::user()->id) style="    border: 1px solid green;" title="Won" @endif>
                                                 <td>{{ $i }}</td>
                                                 <td>{{ $bid->bid_amount }}</td>
                                                 <td>{{ $bid->bid_starting_amount }}</td>
-                                                <td><a href="{{ url('view-auction/'.$bid->id) }}" target="_blank">{{ $bid->title }}</a></td>
+                                                <td><a href="{{ url(''.$bid->auction_id) }}" target="_blank">{{ $bid->title }}</a></td>
                                                 <td width="150">
 
-                                                    <button type="button" class="btn delete-row btn-icon-toggle"
-                                                            data-id="{{ $bid->id }}" data-toggle="tooltip"
-                                                            data-placement="top" data-original-title="Delete row">
-                                                        <i class="fa fa-trash-o"></i>
-                                                    </button>
+                                                    <a target="_blank" href="{{ url(''.$bid->auction_id) }}"  class="btn delete-row btn-icon-toggle"
+                                                            >
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    {{ $bid->auction->isActive() ? 'Active': 'Closed' }}
                                                 </td>
                                             </tr>
                                             @php($i++)

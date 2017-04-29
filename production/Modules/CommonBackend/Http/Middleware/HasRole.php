@@ -31,7 +31,7 @@ class HasRole
             dd('not-authorized');
         }
 
-        return redirect( route( 'dashboard-login') );
+        return redirect( url('/login') );
 
     }
 }

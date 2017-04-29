@@ -32,7 +32,7 @@ Route::group(
 });
 Route::group(
     [
-        'middleware' => ['web','has_role:bidder,auctioneer'],
+        'middleware' => ['web','auth'],
         'prefix' => 'account',
         'as'    =>  'user.',
         'namespace' => 'Modules\Biddings\Http\Controllers'

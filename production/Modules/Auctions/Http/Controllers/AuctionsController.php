@@ -27,8 +27,8 @@ class AuctionsController extends Controller
      */
     public function index(Filters $filter, Request $request)
     {
-        $filter->belongsTo = [Car::class =>['title']];
-        $filter->column = ['id','bid_starting_amount', 'average_bid', 'start_date', 'end_date'];
+        $filter->belongsTo = [Car::class => ['title']];
+        $filter->column = ['id', 'bid_starting_amount', 'average_bid', 'start_date', 'end_date'];
         $auctions = Auction::filter($filter)
             ->paginate(\Helper::limit($request));
         Session::forget('auction.car');
@@ -54,18 +54,26 @@ class AuctionsController extends Controller
             return \Response::json([]);
         }
 
-        $cars = Car::with(['carModel.carCompany', 'meta' => function($query){
-            $query->where('meta_key', 'picture');
-            $query->select('car_id','meta_value');
-        }])
-            ->orWhere('title','like', '%'.$term.'%')
+        $query = Car::query();
 
-            ->orWhereHas('carModel', function($query) use($term){
-                $query->where('model_name', 'like', '%'.$term.'%');
-            })->orWhereHas('carModel.carCompany', function($query) use($term){
-                $query->where('company_name', 'like', '%'.$term.'%');
-            })
-            ->limit(20)->latest()->get();
+        $query->with(['carModel.carCompany','user', 'meta' => function ($query) {
+            $query->where('meta_key', 'picture');
+            $query->select('car_id', 'meta_value');
+        }])
+            ->doesntHave('auction')
+            ->where(function ($q) use ($term) {
+                $q->where('title', 'like', '%' . $term . '%');
+                $q->orWhereHas('carModel', function ($query) use ($term) {
+                    $query->where('model_name', 'like', '%' . $term . '%');
+                });
+                $q->orWhereHas('carModel.carCompany', function ($query) use ($term) {
+                    $query->where('company_name', 'like', '%' . $term . '%');
+                });
+            });
+        if (!$request->has('inspection_completed')){
+            $query->where('is_inspection_complete', 1);
+        }
+          $cars = $query->limit(20)->latest()->get();
 
         $formatted = [];
 
@@ -134,7 +142,7 @@ class AuctionsController extends Controller
     public function edit($id)
     {
         $auction = Auction::find($id);
-        if(!$auction) return redirect()->route(Helper::route('index'));
+        if (!$auction) return redirect()->route(Helper::route('index'));
         $cars = Car::pluck('title', 'id');
 
         return view('auctions::edit', compact('auction', 'cars'));
@@ -181,7 +189,7 @@ class AuctionsController extends Controller
     public function destroy($id)
     {
         $rec = Auction::find($id);
-        if(empty($rec)) return;
+        if (empty($rec)) return;
         return ($rec->forceDelete()) ? 'true' : 'false';
     }
 }

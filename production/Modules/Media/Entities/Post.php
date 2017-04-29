@@ -17,7 +17,7 @@ class Post extends Model
     }
 
     public function post_status(){
-        return $this->hasOne(PostStatus::class);
+        return $this->belongsTo(PostStatus::class);
     }
 
 

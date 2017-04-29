@@ -14,7 +14,7 @@ class Filters extends QueryBuilder
     {
         $this->builder->orderBy('bid_starting_amount', $order);
     }
-
+    
     public function year($year)
     {
         $this->builder->whereHas('car', function($query)use($year){

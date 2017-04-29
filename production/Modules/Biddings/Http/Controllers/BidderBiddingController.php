@@ -24,10 +24,11 @@ class BidderBiddingController extends Controller
      */
     public function index(Filters $filter, Request $request)
     {
-        $filter->column = ['bid_amount', 'user_id'];
-        $filter->belongsToThrough = [Auction::class => ['id','bid_starting_amount'], Car::class => ['title']];
+        $filter->column = ['id','bid_amount', 'user_id', 'auction_id'];
+        $filter->belongsToThrough = [Auction::class => ['bid_starting_amount'], Car::class => ['title']];
         $biddings = Bidding::filter($filter)
             ->where('biddings.user_id', \Auth::user()->id)
+            ->with('auction')
             ->paginate(\Helper::limit($request));
         return view('biddings::bidder.index', compact('biddings'));
     }
@@ -53,29 +54,21 @@ class BidderBiddingController extends Controller
     {
 
         $this->validate($request, [
-            'auction_id' => 'required',
-            'user_id' => 'required',
-            'bid_amount' => 'required',
+            'amount' => 'required',
         ]);
 
-        if (!$bid = Bidding::find($id)) return redirect()->route(Helper::route('index'));
-        $isSuccess = $bid->update(
-            $request->only('user_id', 'auction_id', 'bid_amount')
-        );
+//        return $bid = Bidding::find($id);
+        if (!$bid = Bidding::find($id)) return back();
+
+        if($request->amount < $bid->auction->bid_starting_amount){
+            return back()->with('alert-danger', 'Error: Min Bid Amount Is '. $bid->auction->bid_starting_amount);
+        }
+        $bid->bid_amount = $request->amount;
+        $isSuccess = $bid->save();
 
         return ($isSuccess) ?
             back()->with('alert-success', 'Bid Updated Successfully')
             : back()->with('alert-danger', 'Error: please try again.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        $rec = Bidding::find($id);
-        if (empty($rec)) return;
-        return ($rec->forceDelete()) ? 'true' : 'false';
-    }
 }

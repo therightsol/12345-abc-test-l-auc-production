@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Modules\GeneralSettings\Entities\GeneralSetting;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,7 +20,10 @@ class AppServiceProvider extends ServiceProvider
 
             \Log::info($sql->sql);
         });
-        
+        \View::composer('*', function ($view) {
+            $settings = GeneralSetting::pluck('value', 'key');
+            $view->with(compact('settings'));
+        });
         Schema::defaultStringLength(191);
     }
 

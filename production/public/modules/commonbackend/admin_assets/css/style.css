@@ -169,7 +169,7 @@ select[multiple], select[size] {
     position: relative;
     margin-bottom: -3px;
 }
-/*huzaifa*/
+
 
 .ajax-attri .panel-heading{
     height: 52px;
@@ -345,4 +345,9 @@ select[multiple], select[size] {
     width: 80px;
     height: 80px;
     background-position: -95px -185px;
+}
+
+
+.form-control:focus {
+    border-color: #0aa89e !important;
 }

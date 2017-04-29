@@ -12,14 +12,9 @@
                 </span>
                 @endif
             </div>
-            <div class="form-group{{ $errors->has('user_id') ? ' has-error' : '' }}">
 
-                {{ Form::select('user_id', isset($inspection)?[$inspection->user_id=>$inspection->user->full_name]:[], null,['class' => 'searchUser form-control', 'placeholder' => 'Select User']) }}
-                @if ($errors->has('user_id'))
-                    <span class="help-block">
-                    <strong>{{ $errors->first('user_id') }}</strong>
-                </span>
-                @endif
+            <div class="form-group">
+                <div id="userName">{{ isset($inspection)? 'Username: '.$inspection->user->username :'' }}</div>
             </div>
         @endif
         <div class="form-group{{ $errors->has('date_of_inspection') ? ' has-error' : '' }}">
@@ -31,6 +26,23 @@
                 </span>
             @endif
         </div>
+            @if(Auth::user()->hasRole(['admin', 'staff']))
+        <div class="form-group">
+            <div class="checkbox checkbox-styled">
+                <label class="checkbox-primary" data-toggle="collapse" data-target="#update_password_row">
+                    <input id="change_password" type="checkbox" name="is_inspection_complete" value="1"
+                           @if( old('is_inspection_complete') == 1) checked @else
+                        <?php
+                            if (isset($inspection) and $inspection->car->is_inspection_complete == 1) {
+                                echo 'checked';
+                            }
+                            ?>
+
+                            @endif >Is Inspection Complete
+                </label>
+            </div>
+        </div>
+            @endif
 
 
         @include('commonbackend::layouts._form-action')
@@ -51,19 +63,20 @@
             format: 'dd MM yyyy -- hh:ii:ss',
             autoclose: true,
             todayBtn: true,
-            startDate: "{{ \Carbon\Carbon::now() }}",
+            startDate: "{{ \Carbon\Carbon::now() }}"
         });
         $('input[name=end_date]').datetimepicker({
             format: 'dd MM yyyy -- hh:ii:ss',
             autoclose: true,
             todayBtn: true,
-            startDate: "{{ \Carbon\Carbon::now() }}",
+            startDate: "{{ \Carbon\Carbon::now() }}"
         });
 
     </script>
     <script>
 
         var publicUrl = '{{ asset('/') }}';
+        var oldval = "{{ isset($inspection)? 'Username: '.$inspection->user->username :'' }}";
         $(".js-data-example-ajax").select2({
             ajax: {
                 url: "{{ route('admin.searchCar') }}",
@@ -71,11 +84,11 @@
                 delay: 250,
                 data: function (params) {
                     return {
-                        search: $.trim(params.term)
+                        search: $.trim(params.term),
+                        inspection_completed: 'false'
                     };
                 },
                 processResults: function (data) {
-                    console.log(data);
                     return {
                         results: data
                     };
@@ -87,6 +100,17 @@
             }, // let our custom formatter work
             minimumInputLength: 1,
             templateResult: formatRepo, // omitted for brevity, see the source of this page
+        }).on('change', function (e) {
+            var repo = $(this).select2('data');
+//            console.log(repo[0].info.user.username);
+
+            if(!repo[0].hasOwnProperty('info')){
+                $('#userName').html(oldval);
+
+            }else{
+                $('#userName').html('Username: ' + repo[0].info.user.username);
+            }
+
         });
         function formatRepo(repo) {
             if (repo.loading) return repo.text;
@@ -97,6 +121,7 @@
             } else {
                 img = 'http://placehold.it/60x45';
             }
+
             var markup = "<div class='select2-result-repository clearfix'>" +
                 "<div class='select2-result-repository__avatar'><img src='" + img + "' /></div>" +
                 "<div class='select2-result-repository__meta'>" +
@@ -113,54 +138,7 @@
         }
 
 
-        $(".searchUser").select2({
-            ajax: {
-                url: "{{ route('admin.searchUser') }}",
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return {
-                        search: $.trim(params.term)
-                    };
-                },
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            },
-            escapeMarkup: function (markup) {
-                return markup;
-            }, // let our custom formatter work
-            minimumInputLength: 1,
-            templateResult: formatUser, // omitted for brevity, see the source of this page
-        });
-        function formatUser(repo) {
-            if (repo.loading) return repo.text;
 
-            var img = repo.info.picture;
-            if (img) {
-                if (img.search(/http/) == -1) {
-                    img = publicUrl + img;
-                }
-            } else {
-                img = 'http://placehold.it/60x45';
-            }
-            var markup = "<div class='select2-result-repository clearfix'>" +
-                "<div class='select2-result-repository__avatar'><img src='" + img + "' /></div>" +
-                "<div class='select2-result-repository__meta'>" +
-                "<div class='select2-result-repository__title'>" + repo.info.full_name + "</div>";
-
-            markup += "<div class='select2-result-repository__statistics'>" +
-                "<div class='select2-result-repository__forks'><i class='fa fa-phone'></i> " + repo.info.contact_number + "</div>" +
-                "<div class='select2-result-repository__forks'><i class='fa fa-envelop'></i> " + repo.info.email + "</div>" +
-                "<div class='select2-result-repository__watchers'><i class='fa fa-user'></i> " + repo.info.user_role + "</div>" +
-                "</div>" +
-                "</div></div>";
-
-            return markup;
-        }
 
     </script>
 @endsection

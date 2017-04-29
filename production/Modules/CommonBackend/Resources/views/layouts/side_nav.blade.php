@@ -6,7 +6,7 @@
             </a>
         </div>
         <div class="expanded">
-            <a href="#">
+            <a href="{{route('homepage')}}">
                 <span class="text-lg text-bold text-primary ">PakAuction</span>
             </a>
         </div>
@@ -123,19 +123,33 @@
             @endif
             @if(Auth::user()->hasRole(['auctioneer']))
                 <li>
-                    <a href="{{route('auctioneer.inspection.create')}}"
-                       class="{{ Helper::isActiveResource('account.inspection') }}">
+                    <a href="{{route('auctioneer.inspection.index')}}"
+                       class="{{ Helper::isActiveResource('auctioneer.inspection') }}">
                         <div class="gui-icon"><i class="fa fa-gears"></i></div>
                         <span class="title">Request Inspection</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('auctioneer.auctions')}}"
+                       class="{{ Helper::isActiveRoute('auctioneer.auctions') }}">
+                        <div class="gui-icon"><i class="fa fa-gavel"></i></div>
+                        <span class="title">My Auctions</span>
                     </a>
                 </li>
             @endif
             @if(Auth::user()->hasRole(['bidder']))
                 <li>
                     <a href="{{route('bidder.bidding')}}"
-                       class="{{ Helper::isActiveResource('bidder.bidding') }}">
+                       class="{{ Helper::isActiveRoute('bidder.bidding') }}">
                         <div class="gui-icon"><i class="fa fa-gears"></i></div>
                         <span class="title">Bidding</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('bidder.wonAuctions')}}"
+                       class="{{ Helper::isActiveRoute('bidder.wonAuctions') }}">
+                        <div class="gui-icon"><i class="fa fa-gavel"></i></div>
+                        <span class="title">Won Auctions</span>
                     </a>
                 </li>
             @endif

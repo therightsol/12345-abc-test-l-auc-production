@@ -25,7 +25,7 @@ class GeneralSettingsDatabaseSeeder extends Seeder
         $size = GeneralSetting::all();
         if (sizeof ($size) == 0){
             Model::unguard();
-            TestDummy::times(5)->create(GeneralSetting::class);
+            TestDummy::times(13)->create(GeneralSetting::class);
         }
 
 

@@ -72,6 +72,7 @@ $factory(\Modules\Cars\Entities\Car::class, function ($faker) {
         'exterior_color'    => $faker->hexColor,
         'interior_color'    =>  $faker->hexColor,
         'grade'          =>  $faker->randomElement(['A', 'B', 'C', "D"]),
+        'is_inspection_complete'	=>	mt_rand(0, 1),
         'kilometers'    => $faker->numberBetween(800, 99999),
         'engine_number' => $faker->randomLetter . $faker->numberBetween(1, 9999999),
         'chassis_number'    => $faker->randomLetter . $faker->randomLetter . $faker->randomLetter . $faker->numberBetween(1, 99959),
@@ -338,11 +339,19 @@ $factory(\Modules\GeneralSettings\Entities\GeneralSetting::class, function ($fak
     \Modules\GeneralSettings\Database\Seeders\GeneralSettingsDatabaseSeeder::updateIterationNumber(($number+1));
 
     $genral_setting_Arr = [
+    	['picture','images/image-not-found-100x100.png'],
+    	['currency','Pakistani Rupees'],
+    	['currency_symbol','Rs. '],
+    	['phone_number','04231234567'],
+    	['email','info@company.com'],
+    	['address','Office 32, Opposite ABC, Block Test, Johar Town, Lahore'],
+    	['map_latitude','31.4622'],
+    	['map_longitude','74.2942'],
         ['price_unit' , 'PKR'],
         ['max_allowed_days' , 14],
-        ['maximum_allowed_bid', 9999999999],
-        ['rules_page'    ,null],
-        ['terms_and_conditions_page' , null],
+        ['max_allowed_bids', 9999999999],
+        ['copyright'    ,'© All rights are reserved.'],
+        ['map_zoom' , 15],
     ];
 
     $general_setting = $genral_setting_Arr[$number];
